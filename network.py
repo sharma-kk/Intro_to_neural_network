@@ -147,3 +147,20 @@ def sigmoid(z):
 def sigmoid_prime(z):
     """Derivative of the sigmoid function."""
     return sigmoid(z)*(1-sigmoid(z))
+
+def test_net(net, data):
+    """find out how many digts are identified correctly by the network"""
+    data = list(data)
+    n_test = len(data)
+    test_results = [(np.argmax(net.feedforward(x)), y)
+                        for (x, y) in data]
+    print(f'{sum(int(x == y) for (x, y) in test_results)} out of {n_test} digits identified correctly !')
+
+def find_bad_idx(net, data):
+    """find indexes in test data set for whom networks gives wrong prediciton"""
+    test_results = [(np.argmax(net.feedforward(x)), y) for (x, y) in data]
+    idx_bad = []
+    for i, (x,y) in enumerate(test_results):
+        if x != y:
+            idx_bad.append(i)
+    return np.array(idx_bad)
